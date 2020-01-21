@@ -17,6 +17,7 @@
 
 enum layers {
   _BASE = 0,
+  _NUM,
   _FN1,
   _FN2,
 };
@@ -30,22 +31,28 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_BASE] = LAYOUT_ortho_4x4(
-    KC_PGUP,  KC_HOME,  KC_UP,    KC_END , \
-    KC_PGDN,  KC_LEFT,  KC_DOWN,  KC_RGHT, \
-    MO(_FN2), KC_VOLU,  KC_MPLY,  KC_MPRV, \
-    MO(_FN1), KC_VOLD,  KC_MUTE,  KC_MNXT  \
+    MO(_FN1), KC_Q,     KC_W,     KC_E,   \
+    MO(_FN2), KC_A,     KC_S,     KC_D,   \
+    KC_LSFT,  KC_Z,     KC_X,     KC_C,   \
+    KC_LCTL,  KC_LCMD,  KC_LALT,  KC_SPC  \
+  ),
+  [_NUM] = LAYOUT_ortho_4x4(
+    MO(_FN1), _______,  KC_UP,    _______,\
+    MO(_FN2), KC_LEFT,  KC_DOWN,  KC_RGHT,\
+    KC_LSFT,  _______,  _______,  _______,\
+    KC_LCTL,  KC_LCMD,  KC_LALT,  KC_SPC  \
   ),
   [_FN1] = LAYOUT_ortho_4x4(
-    KC_ESC,   KC_P7,    KC_P8,    KC_P9,   \
-    KC_TAB,   KC_P4,    KC_P5,    KC_P6,   \
-    KC_ENT,   KC_P1,    KC_P2,    KC_P3,   \
-    _______,  KC_P0,    KC_P0,    KC_DOT   \
+    _______,  DF(_BASE),KC_PGUP,  DF(_NUM),\
+    _______,  KC_HOME,  KC_PGDN,  KC_END,  \
+    _______,  _______,  _______,  KC_ENT,  \
+    _______,  _______,  _______,  KC_ESC   \
   ),
   [_FN2] = LAYOUT_ortho_4x4(
-    RGB_TOG,  RGB_HUI,  RGB_SAI,  RGB_VAI, \
-    RGB_MOD,  RGB_HUD,  RGB_SAD,  RGB_VAD, \
-    _______,  _______,  _______,  RESET,   \
-    BL_STEP,  _______,  QMKBEST,  QMKURL   \
+    BL_STEP,  KC_MNXT,  KC_BRIU,  KC_MPRV, \
+    _______,  KC_VOLD,  KC_BRID,  KC_VOLU, \
+    RGB_M_T,  _______,  _______,  RESET,   \
+    RGB_TOG,  _______,  QMKBEST,  QMKURL   \
   )
 
 };
@@ -55,7 +62,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QMKBEST:
       if (record->event.pressed) {
         // when keycode QMKBEST is pressed
-        SEND_STRING("QMK is the best thing ever!");
+        SEND_STRING("20chan macropad (temp)");
       } else {
         // when keycode QMKBEST is released
       }
@@ -63,11 +70,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QMKURL:
       if (record->event.pressed) {
         // when keycode QMKURL is pressed
-        SEND_STRING("https://qmk.fm/" SS_TAP(X_ENTER));
+        eeconfig_init();
       } else {
         // when keycode QMKURL is released
       }
       break;
   }
   return true;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  switch (get_highest_layer(state)) {
+    case _BASE:
+      rgblight_setrgb (0x00,  0x00, 0xFF);
+      break;
+    case _NUM:
+      rgblight_setrgb (0xFF,  0x00, 0x00);
+      break;
+    default:
+      rgblight_setrgb (0x00,  0xFF, 0xFF);
+      break;
+  }
+  return state;
 }
