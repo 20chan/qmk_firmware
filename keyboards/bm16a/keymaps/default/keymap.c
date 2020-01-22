@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,  _______,  _______,  KC_ESC   \
   ),
   [_FN2] = LAYOUT_ortho_4x4(
-    BL_STEP,  KC_MNXT,  KC_BRIU,  KC_MPRV, \
+    BL_STEP,  KC_MPRV,  KC_BRIU,  KC_MNXT, \
     _______,  KC_VOLD,  KC_BRID,  KC_VOLU, \
     RGB_M_T,  _______,  _______,  RESET,   \
     RGB_TOG,  _______,  QMKBEST,  QMKURL   \
