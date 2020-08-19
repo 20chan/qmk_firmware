@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config_common.h"
 
 #define GRAVE_ESC_GUI_OVERRIDE
+#define GRAVE_ESC_CTRL_OVERRIDE
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID           0x04D8
